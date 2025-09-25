@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Agenda de Contactos{% endblock %}</title>
+</head>
+<body>
+    <h1>Agenda de Contactos</h1>
+    
+    <a href="{% url 'lista_contactos' %}">Inicio</a> |
+    <a href="{% url 'agregar_contacto' %}">Agregar Contacto</a> |
+    <a href="{% url 'buscar_contactos' %}">Buscar</a>
+    
+    <hr>
+    
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Buscar Contactos{% endblock %}
+
+{% block content %}
+<h2>Buscar Contactos</h2>
+
+<form method="get" action="">
+    <input type="text" name="buscar" placeholder="Buscar por nombre o correo..." value="{{ buscar }}">
+    <button type="submit">Buscar</button>
+</form>
+
+<br>
+<a href="{% url 'lista_contactos' %}">Volver a lista completa</a>
+
+{% if buscar %}
+    <h3>Resultados para: "{{ buscar }}"</h3>
+    
+    {% if contactos %}
+        <table border="1">
+            <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Dirección</th>
+            </tr>
+            {% for contacto in contactos %}
+            <tr>
+                <td>{{ contacto.nombre }}</td>
+                <td>{{ contacto.telefono }}</td>
+                <td>{{ contacto.correo }}</td>
+                <td>{{ contacto.direccion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No se encontraron contactos para "{{ buscar }}"</p>
+    {% endif %}
+{% else %}
+    <p>Ingresa un término de búsqueda para encontrar contactos</p>
+{% endif %}
+{% endblock %}

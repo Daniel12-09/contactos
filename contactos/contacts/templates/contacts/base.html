@@ -2,17 +2,52 @@
 <html>
 <head>
     <title>{% block title %}Agenda de Contactos{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: white;
+            background-color: #4169e1;
+            padding: 15px;
+            text-align: center;
+        }
+        .menu {
+            background-color: #6495ed;
+            padding: 12px;
+            margin: 15px 0;
+        }
+        .menu a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .menu a:hover {
+            color: #ffd700;
+        }
+        .content {
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #4169e1;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Agenda de Contactos</h1>
     
-    <a href="{% url 'lista_contactos' %}">Inicio</a> |
-    <a href="{% url 'agregar_contacto' %}">Agregar Contacto</a> |
-    <a href="{% url 'buscar_contactos' %}">Buscar</a>
+    <div class="menu">
+        <a href="{% url 'lista_contactos' %}">Inicio</a>
+        <a href="{% url 'agregar_contacto' %}">Agregar Contacto</a>
+        <a href="{% url 'buscar_contactos' %}">Buscar</a>
+    </div>
     
-    <hr>
-    
-    {% block content %}
-    {% endblock %}
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>

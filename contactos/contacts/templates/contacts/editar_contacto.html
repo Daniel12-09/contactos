@@ -1,23 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'contacts/base.html' %}
 
 {% block title %}Editar Contacto{% endblock %}
 
 {% block content %}
-<h2>Editar Contacto</h2>
+<h2 style="color: #4169e1;">Editar Contacto</h2>
 
 {% if error %}
-    <p style="color: red;">{{ error }}</p>
+    <p style="color: red; background: #ffe6e6; padding: 10px; border: 1px solid red;">{{ error }}</p>
 {% endif %}
 
 <form method="post">
     {% csrf_token %}
-    <input type="text" name="nombre" value="{{ contacto.nombre }}" required><br><br>
-    <input type="text" name="telefono" value="{{ contacto.telefono }}" required><br><br>
-    <input type="text" name="correo" value="{{ contacto.correo }}" required><br><br>
-    <textarea name="direccion">{{ contacto.direccion }}</textarea><br><br>
-    <button type="submit">Actualizar Contacto</button>
+    
+    <p><strong>Nombre:</strong> <br>
+    <input type="text" name="nombre" value="{{ contacto.nombre }}" required style="width: 300px; padding: 8px; border: 1px solid #4169e1;"></p>
+    
+    <p><strong>Telefono:</strong> <br>
+    <input type="text" name="telefono" value="{{ contacto.telefono }}" required style="width: 300px; padding: 8px; border: 1px solid #4169e1;"></p>
+    
+    <p><strong>Correo:</strong> <br>
+    <input type="text" name="correo" value="{{ contacto.correo }}" required style="width: 300px; padding: 8px; border: 1px solid #4169e1;"></p>
+    
+    <p><strong>Direccion:</strong> <br>
+    <textarea name="direccion" style="width: 300px; height: 80px; padding: 8px; border: 1px solid #4169e1;">{{ contacto.direccion }}</textarea></p>
+    
+    <button type="submit" style="background: #ffa500; color: white; padding: 10px 20px; border: none; font-size: 16px;">Actualizar</button>
+    <a href="{% url 'lista_contactos' %}" style="background: #666; color: white; padding: 10px 20px; text-decoration: none;">Cancelar</a>
 </form>
-
-<br>
-<a href="{% url 'lista_contactos' %}">Volver a la lista</a>
 {% endblock %}

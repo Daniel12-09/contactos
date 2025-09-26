@@ -1,0 +1,44 @@
+{% extends 'contacts/base.html' %}
+
+{% block title %}Lista de Contactos{% endblock %}
+
+{% block content %}
+<h2 style="color: #4169e1;">Lista de Contactos</h2>
+
+<form method="get" action="">
+    <input type="text" name="buscar" placeholder="Buscar..." value="{{ buscar }}" 
+           style="padding: 8px; width: 250px; border: 1px solid #4169e1;">
+    <button type="submit" style="padding: 8px 15px; background: #32cd32; color: white; border: none;">Buscar</button>
+</form>
+
+<br>
+
+
+<br><br>
+
+{% if contactos %}
+    <table border="1" width="100%" style="border-collapse: collapse;">
+        <tr bgcolor="#4169e1" style="color: white;">
+            <th style="padding: 10px;">Nombre</th>
+            <th style="padding: 10px;">Telefono</th>
+            <th style="padding: 10px;">Correo</th>
+            <th style="padding: 10px;">Direccion</th>
+            <th style="padding: 10px;">Acciones</th>
+        </tr>
+        {% for contacto in contactos %}
+        <tr style="background: {% cycle '#f9f9f9' 'white' %};">
+            <td style="padding: 8px;">{{ contacto.nombre }}</td>
+            <td style="padding: 8px;">{{ contacto.telefono }}</td>
+            <td style="padding: 8px;">{{ contacto.correo }}</td>
+            <td style="padding: 8px;">{{ contacto.direccion }}</td>
+            <td style="padding: 8px;">
+                <a href="{% url 'editar_contacto' contacto.id %}" style="background: #ffa500; color: white; padding: 4px 8px; text-decoration: none;">Editar</a>
+                <a href="{% url 'eliminar_contacto' contacto.id %}" style="background: #dc143c; color: white; padding: 4px 8px; text-decoration: none;">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p style="color: #666; text-align: center; padding: 30px;">No hay contactos registrados</p>
+{% endif %}
+{% endblock %}

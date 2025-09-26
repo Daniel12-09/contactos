@@ -8,8 +8,7 @@ def lista_contactos(request):
     if buscar:
         contactos = contactos.filter(nombre__icontains=buscar) | contactos.filter(correo__icontains=buscar)
     
-    # CAMBIA: 'contacts/lista_contactos.html' → 'lista_contactos.html'
-    return render(request, 'lista_contactos.html', {
+    return render(request, 'contacts/lista_contactos.html', {
         'contactos': contactos,
         'buscar': buscar
     })
@@ -22,8 +21,7 @@ def agregar_contacto(request):
         direccion = request.POST['direccion']
         
         if '@' not in correo or '.' not in correo:
-            # CAMBIA: 'contacts/agregar_contacto.html' → 'agregar_contacto.html'
-            return render(request, 'agregar_contacto.html', {
+            return render(request, 'contacts/agregar_contacto.html', {
                 'error': 'El correo electrónico no es válido'
             })
         
@@ -35,8 +33,7 @@ def agregar_contacto(request):
         )
         return redirect('lista_contactos')
     
-    # CAMBIA: 'contacts/agregar_contacto.html' → 'agregar_contacto.html'
-    return render(request, 'agregar_contacto.html')
+    return render(request, 'contacts/agregar_contacto.html')
 
 def editar_contacto(request, contacto_id):
     contacto = Contacto.objects.get(id=contacto_id)
@@ -48,8 +45,7 @@ def editar_contacto(request, contacto_id):
         contacto.direccion = request.POST['direccion']
         
         if '@' not in contacto.correo or '.' not in contacto.correo:
-            # CAMBIA: 'contacts/editar_contacto.html' → 'editar_contacto.html'
-            return render(request, 'editar_contacto.html', {
+            return render(request, 'contacts/editar_contacto.html', {
                 'contacto': contacto,
                 'error': 'El correo electrónico no es válido'
             })
@@ -57,8 +53,7 @@ def editar_contacto(request, contacto_id):
         contacto.save()
         return redirect('lista_contactos')
     
-    # CAMBIA: 'contacts/editar_contacto.html' → 'editar_contacto.html'
-    return render(request, 'editar_contacto.html', {'contacto': contacto})
+    return render(request, 'contacts/editar_contacto.html', {'contacto': contacto})
 
 def eliminar_contacto(request, contacto_id):
     contacto = Contacto.objects.get(id=contacto_id)
@@ -72,8 +67,7 @@ def buscar_contactos(request):
     if buscar:
         contactos = contactos.filter(nombre__icontains=buscar) | contactos.filter(correo__icontains=buscar)
     
-    # CAMBIA: 'contacts/buscar_contactos.html' → 'buscar_contactos.html'
-    return render(request, 'buscar_contactos.html', {
+    return render(request, 'contacts/buscar_contactos.html', {
         'contactos': contactos,
         'buscar': buscar
     })

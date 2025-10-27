@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from contacts import views  # ← Importar desde la app contacts
+from contacts import views  
 
 urlpatterns = [
     path('admin/', admin.site.urls),

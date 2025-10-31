@@ -1,5 +1,4 @@
 django
 gunicorn
-openpyx1
 python-dotenv
 psycopg2

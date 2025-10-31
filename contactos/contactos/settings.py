@@ -15,8 +15,13 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,7 +85,7 @@ DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("DBNAME"),
-        "USER:": os.getenv("USER"),
+        "USER": os.getenv("USER"),
         "PASSWORD": os.getenv("PASSWORD"),
         "HOST": os.getenv("HOST"),
         "PORT": os.getenv("PORT"),

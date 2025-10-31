@@ -17,12 +17,18 @@ load_dotenv()
 
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
+print("--- INICIO DEBUG .ENV ---")
+print(f"La ruta BASE_DIR es: {BASE_DIR}")
+print(f"Buscando .env en: {os.path.join(BASE_DIR, '.env')}")
+print(f"Usuario leído: {os.getenv('USER')}")
+print(f"Host leído:    {os.getenv('HOST')}")
+print("--- FIN DEBUG .ENV ---")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/

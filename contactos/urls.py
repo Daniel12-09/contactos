@@ -1,9 +1,11 @@
+# En el archivo urls.py principal de tu proyecto
+
 from django.contrib import admin
 from django.urls import path, include
-from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.inicio, name='inicio'),
-    path('', include('inventario.urls')),
+    
+    # ÚNICA ruta raíz: incluye la aplicación 'contactos'
+    path('', include('agenda.urls')),
 ]

@@ -4,17 +4,10 @@ from .models import Contacto
 
 
 class ContactoSerializer(serializers.HyperlinkedModelSerializer):
-    
     class Meta:
         model = Contacto
-        
-        fields = [
-            "url",
-            "nombre",
-            "telefono",
-            "correo",
-            "direccion"
-        ]
+        fields = ["url", "nombre", "telefono", "correo", "direccion"]
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

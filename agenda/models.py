@@ -7,4 +7,4 @@ class Contacto(models.Model):
     direccion = models.TextField(blank=True)
 
     def __str__(self):
-        return self.nombre  
+        return self.nombre

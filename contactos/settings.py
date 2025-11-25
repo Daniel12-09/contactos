@@ -70,16 +70,20 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    
+    # 🚨 MUEVE ESTA LÍNEA AQUÍ (Lo más arriba posible)
+    'corsheaders.middleware.CorsMiddleware', 
+    
+    'whitenoise.middleware.WhiteNoiseMiddleware', # (Esta es buena práctica tenerla aquí también)
     'django.contrib.sessions.middleware.SessionMiddleware',
+    
+    # CommonMiddleware debe ir DESPUÉS de CorsMiddleware
     'django.middleware.common.CommonMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'contactos.urls'

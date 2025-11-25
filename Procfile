@@ -1,2 +1,1 @@
-web: gunicorn contactos.wsgi
-release: python manage.py migrate
+web: python manage.py migrate && gunicorn agenda.wsgi

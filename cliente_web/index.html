@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente ES03 - Agenda de Contactos</title>
+    <style>
+        /* Estilos simples para que se vea ordenado */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding-top: 50px; }
+        .container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px; }
+        h2 { text-align: center; color: #333; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #218838; }
+        button.logout { background-color: #dc3545; margin-top: 5px; }
+        button.logout:hover { background-color: #c82333; }
+        .hidden { display: none; }
+        .contact-card { background: #e9ecef; padding: 10px; margin-top: 10px; border-radius: 5px; border-left: 5px solid #007bff; }
+        #error-msg { color: red; text-align: center; margin-top: 10px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="login-view">
+            <h2>🔐 Iniciar Sesión</h2>
+            <p style="text-align: center; font-size: 0.9em; color: #666;">Ingresa tus credenciales para obtener el Token JWT</p>
+            <input type="text" id="username" placeholder="Usuario (admin)">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button onclick="login()">Obtener Token y Entrar</button>
+            <p id="error-msg"></p>
+        </div>
+
+        <div id="app-view" class="hidden">
+            <h2>📞 Mis Contactos</h2>
+            <div id="lista-contactos">
+                <p>Cargando datos...</p>
+            </div>
+            <button onclick="cargarContactos()">🔄 Actualizar Lista</button>
+            <button class="logout" onclick="logout()">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. CONFIGURACIÓN: Pon aquí tu URL de Heroku
+        // ==========================================
+        const BASE_URL = 'https://app-daniel-3c4dd4db0d66.herokuapp.com'; 
+        // (Asegúrate que sea https y sin slash al final)
+
+        // Función para Iniciar Sesión (Obtener Token)
+        async function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            errorMsg.innerText = "Conectando...";
+
+            try {
+                // Petición POST a /api/token/
+                const response = await fetch(`${BASE_URL}/api/token/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // ¡ÉXITO! Guardamos el token en el navegador
+                    localStorage.setItem('jwt_token', data.access);
+                    errorMsg.innerText = "";
+                    cambiarVista('app');
+                    cargarContactos(); // Cargar datos automáticamente
+                } else {
+                    errorMsg.innerText = "Error: Usuario o contraseña incorrectos.";
+                }
+            } catch (error) {
+                console.error(error);
+                errorMsg.innerText = "Error de conexión con el servidor.";
+            }
+        }
+
+        // Función para Obtener Datos Protegidos
+        async function cargarContactos() {
+            const token = localStorage.getItem('jwt_token');
+            const lista = document.getElementById('lista-contactos');
+            
+            if (!token) {
+                logout();
+                return;
+            }
+
+            try {
+                // Petición GET enviando el TOKEN en el Header
+                const response = await fetch(`${BASE_URL}/api/contactos/`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // <--- AQUÍ VA EL TOKEN
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.status === 401) {
+                    alert("Tu sesión ha expirado. Ingresa nuevamente.");
+                    logout();
+                    return;
+                }
+
+                const datos = await response.json();
+                
+                // Limpiar lista
+                lista.innerHTML = "";
+
+                if (datos.length === 0) {
+                    lista.innerHTML = "<p>No hay contactos registrados.</p>";
+                    return;
+                }
+
+                // Dibujar cada contacto
+                datos.forEach(contacto => {
+                    // Ajusta 'nombre' y 'telefono' si tus campos se llaman diferente en el modelo
+                    lista.innerHTML += `
+                        <div class="contact-card">
+                            <strong>${contacto.nombre || 'Sin Nombre'}</strong><br>
+                            📞 ${contacto.telefono || 'Sin Teléfono'}
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                lista.innerHTML = "<p style='color:red'>Error al cargar datos.</p>";
+            }
+        }
+
+        // Utilidades de interfaz
+        function cambiarVista(vista) {
+            if (vista === 'app') {
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('app-view').classList.remove('hidden');
+            } else {
+                document.getElementById('login-view').classList.remove('hidden');
+                document.getElementById('app-view').classList.add('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('jwt_token');
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
+            cambiarVista('login');
+        }
+    </script>
+</body>
+</html>
